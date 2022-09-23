@@ -11,36 +11,28 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # Install pipenv dependencies
-      - name: Install dependencies
-        uses: VaultVulp/action-pipenv@v2.0.1
+      - uses: ammaraskar/sphinx-action@master
         with:
-          command: install
+          docs-folder: "docs/"
 
-      # Build sphinx source
-      - name: Build sphinx site
-        uses: VaultVulp/action-pipenv@v2.0.1
+      # Upload build html artifact
+      - name: Create HTML artifact
+        uses: actions/upload-artifact@v1
         with:
-          command: run build
+          name: DocumentationHTML
+          path: docs/_build/html/
 
       # Commit built site to gh-pages branch.
       - name: Commit to github pages branch
         run: |
           git clone https://github.com/${{ github.repository }} --branch gh-pages --single-branch gh-pages
-          rsync -av --delete docs/_build/ gh-pages
+          rsync -av --delete docs/_build/html/ gh-pages
           cd gh-pages
           touch .nojekyll
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          echo "Before Add"
-          pwd
-          git status
           git add -A
-          echo "After Add"
-          git status
           git commit -m "Updated site." || true
-          echo "After Commit"
-          git status
           # The above command will fail if no changes were present, so we ignore
           # that.
 
