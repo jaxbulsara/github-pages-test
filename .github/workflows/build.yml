@@ -17,24 +17,21 @@ jobs:
         with:
           command: install
 
-      # Get current build
-      - name: Get current build
-        run: |
-          git clone https://github.com/${{ github.repository }} \
-            --branch gh-pages \
-            --single-branch \
-            docs/_build
-
       # Build sphinx source
       - name: Build sphinx site
         uses: VaultVulp/action-pipenv@v2.0.1
         with:
           command: run build
 
-      # Publish built docs to gh-pages branch.
+      # Commit built site to gh-pages branch.
       - name: Commit to github pages branch
         run: |
-          cd docs/_build
+          git clone https://github.com/${{ github.repository }} \
+            --branch gh-pages \
+            --single-branch \
+            gh-pages
+          rsync -av docs/_build gh-pages
+          cd gh-pages
           touch .nojekyll
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -43,9 +40,10 @@ jobs:
           # The above command will fail if no changes were present, so we ignore
           # that.
 
+      # Push new site build
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           branch: gh-pages
-          directory: docs/_build
+          directory: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
