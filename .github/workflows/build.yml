@@ -26,11 +26,8 @@ jobs:
       # Commit built site to gh-pages branch.
       - name: Commit to github pages branch
         run: |
-          git clone https://github.com/${{ github.repository }} \
-            --branch gh-pages \
-            --single-branch \
-            gh-pages
-          rsync -av docs/_build gh-pages
+          git clone https://github.com/${{ github.repository }} --branch gh-pages --single-branch gh-pages
+          rsync -av --delete docs/_build gh-pages
           cd gh-pages
           touch .nojekyll
           git config --local user.email "action@github.com"
