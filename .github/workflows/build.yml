@@ -20,7 +20,7 @@ jobs:
       # Get current build
       - name: Get current build
         run: |
-          git clone https://githum.com/${{ github.repository }} \
+          git clone https://github.com/${{ github.repository }} \
             --branch gh-pages \
             --single-branch \
             docs/_build
