@@ -1,0 +1,9 @@
+name: Sphinx Build
+on:  [push]
+jobs:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v1
+    - uses: ammaraskar/sphinx-action@master
+      with:
+        docs-folder: "docs/"
