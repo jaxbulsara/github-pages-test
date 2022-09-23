@@ -13,7 +13,9 @@ jobs:
 
       # Install pipenv dependencies
       - name: Install dependencies
-        run: pipenv install
+        uses: VaultVulp/action-pipenv@v2.0.1
+        with:
+          command: install
 
       # Get current build
       - name: Get current build
@@ -25,7 +27,9 @@ jobs:
 
       # Build sphinx source
       - name: Build sphinx site
-        run: pipenv run build
+        uses: VaultVulp/action-pipenv@v2.0.1
+        with:
+          command: run build
 
       # Publish built docs to gh-pages branch.
       - name: Commit to github pages branch
