@@ -22,7 +22,7 @@ jobs:
         run: |
           git clone https://githum.com/${{ github.repository }} \
             --branch gh-pages \
-            --single-branch gh-pages \
+            --single-branch \
             docs/_build
 
       # Build sphinx source
